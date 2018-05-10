@@ -7,8 +7,8 @@ p {
   display: inline;
 }
 
-button {
-  margin: 0px;
+.btn {
+  margin-top: 8px;
 }
 
 a {
@@ -17,4 +17,12 @@ a {
 
 .container {
   padding: 50px !important;
+}
+
+.bottom-buffer {
+  margin-bottom: 10px;
+}
+
+.hide {
+  display: none;
 }

@@ -1,4 +1,5 @@
-const url = 'https://wind-bow.glitch.me/twitch-api/channels/';
+//const url = 'https://wind-bow.glitch.me/twitch-api/channels/';
+const url = 'https://wind-bow.glitch.me/twitch-api/';
 
 const streams = {
   'eslCS' : { 'name' : "esl_csgo" },
@@ -6,34 +7,72 @@ const streams = {
   'FCC' : { 'name' : "freecodecamp" },
   'testChannel' : { 'name' : 'test_channel' }
 };
+const streamKeys = Object.keys(streams);
 
-const streamList = Object.keys(streams);
 
-function getStreamData(url, streamName) {
+
+function getStreamData(url, type, streamName) {
   return new Promise ((resolve, reject) => {
     const xhr = new XMLHttpRequest();
-    xhr.open('GET', url + streamName);
+    xhr.open('GET', url + type + streamName);
     xhr.onload = () => resolve(xhr.responseText);
     xhr.onerror = () => reject(xhr.statusText);
     xhr.send();
   });
 }
 
-async function storeData() {
-  for(let i=0; i<streamList.length; i++) {
-    const stream = streams[streamList[i]];
-    stream.response = JSON.parse(await getStreamData(url, stream.name));
-    console.log(stream.response);
+async function storeStreamData() {
+  for(let i=0; i<streamKeys.length; i++) {
+    const stream = streams[streamKeys[i]];
+    stream.response = JSON.parse(await getStreamData(url, "channels/", stream.name));
+    stream.response.isOnline = JSON.parse(await getStreamData(url, "streams/", stream.name)).stream == null ? false : true;
   }
   displayStreamData();
 }
 
 function displayStreamData() {
   const streamsEl = document.querySelector('.streamList');
-  for(let i=0; i < streamList.length; i++) {
-    let stream = streams[streamList[i]];
-    streamsEl.innerHTML += "<div class='bg bg-success border border-dark row'><img src=" + stream.response.logo + ">" + "<p>" + "<a href='https://twitch.tv/" + stream.name + "'/>" + stream.name + "</a>" + " : " + stream.response.status + "</p></div>";
+  for(let i=0; i < streamKeys.length; i++) {
+    let stream = streams[streamKeys[i]];
+    streamsEl.innerHTML += "<div class='bg border border-dark row " + (stream.response.isOnline ? 'bg-success' : 'bg-danger') + "' id='" + streamKeys[i] + "'><img src=" + stream.response.logo + ">" + "<p>" + "<a href='https://twitch.tv/" + stream.name + "'/>" + stream.name + "</a>" + " : " + stream.response.status + "</p></div>";
   }
 }
 
-storeData();
+function filterAll() {
+  const streamEls = document.querySelectorAll('.streamList div');
+  streamEls.forEach(streamEl => {
+    if (streamEl.className.indexOf('hide') !== -1) {
+      streamEl.className = streamEl.className.replace(' hide', "");
+    }
+  });
+}
+
+function filterOnline() {
+  const streamEls = document.querySelectorAll('.streamList div');
+  streamEls.forEach(streamEl => {
+    if (streamEl.className.indexOf("bg-success") === -1) {
+      if(streamEl.className.indexOf('hide') == -1) {
+        streamEl.className += ' hide';
+      }
+    } else {
+      streamEl.className = streamEl.className.replace(' hide', "");
+    }
+    
+    //streamEl.className.indexOf("bg-success") === -1 ? streamEl.className += ' hide' : streamEl.className = streamEl.className.replace(' hide', "");
+  });
+}
+
+function filterOffline() {
+  const streamEls = document.querySelectorAll('.streamList div');
+  streamEls.forEach(streamEl => {
+    if (streamEl.className.indexOf("bg-danger") === -1) {
+      if (streamEl.className.indexOf('hide') == -1) {
+        streamEl.className += ' hide';
+      }
+    } else {
+      streamEl.className = streamEl.className.replace(' hide', "");
+    }
+  });
+}
+
+storeStreamData();
