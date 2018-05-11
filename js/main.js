@@ -1,4 +1,3 @@
-//const url = 'https://wind-bow.glitch.me/twitch-api/channels/';
 const url = 'https://wind-bow.glitch.me/twitch-api/';
 
 const streams = {
@@ -57,8 +56,6 @@ function filterOnline() {
     } else {
       streamEl.className = streamEl.className.replace(' hide', "");
     }
-    
-    //streamEl.className.indexOf("bg-success") === -1 ? streamEl.className += ' hide' : streamEl.className = streamEl.className.replace(' hide', "");
   });
 }
 
