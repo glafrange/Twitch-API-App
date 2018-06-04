@@ -3,8 +3,13 @@ img {
   height: 10%;
 }
 
+body {
+  background-color: lightgoldenrodyellow
+}
+
 p {
   display: inline;
+  font-size: 20px;
 }
 
 .btn {
@@ -25,4 +30,8 @@ a {
 
 .hide {
   display: none;
+}
+
+.stream-header {
+  background-color: steelblue
 }

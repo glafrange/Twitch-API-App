@@ -33,7 +33,7 @@ function displayStreamData() {
   const streamsEl = document.querySelector('.streamList');
   for(let i=0; i < streamKeys.length; i++) {
     let stream = streams[streamKeys[i]];
-    streamsEl.innerHTML += "<div class='bg border border-dark row " + (stream.response.isOnline ? 'bg-success' : 'bg-danger') + "' id='" + streamKeys[i] + "'><img src=" + stream.response.logo + ">" + "<p>" + "<a href='https://twitch.tv/" + stream.name + "'/>" + stream.name + "</a>" + " : " + stream.response.status + "</p></div>";
+    streamsEl.innerHTML += "<div class='bg border border-dark row " + (stream.response.isOnline ? 'bg-success' : 'bg-danger') + "' id='" + streamKeys[i] + "'><img src=" + stream.response.logo + ">" + "<h4>" + "<a href='https://twitch.tv/" + stream.name + "'/>" + stream.name + "</a>" + " : " + "</h4>" + "<p>" + stream.response.status + "</p></div>";
   }
 }
 
